@@ -31,7 +31,7 @@ public class Aplicacao {
 					inserirJogador(jogadorDAO, jogador, sc);
 					break;
 				case 3:
-					excluirJogador(jogadorDAO, jogador);
+					excluirJogador(jogadorDAO, jogador, sc);
 					break;
 				case 4:
 					atualizarJogador(jogadorDAO, jogador, sc);
@@ -113,9 +113,33 @@ public class Aplicacao {
 	    }
 	}
 
-	public static void excluirJogador(JogadorDAO jogadorDAO, Jogador jogador) {
-		System.out.println("\n\n==== Excluir jogador (id " + jogador.getId() + ") === ");
-		jogadorDAO.delete(jogador.getId());
+	public static void excluirJogador(JogadorDAO jogadorDAO, Jogador jogador, Scanner sc) {
+	    boolean jogadorEncontrado = false;
+	    
+	    do {
+	        System.out.println("\n\n==== Excluir jogador ===");
+	        System.out.println("Digite o ID do jogador que deseja excluir:");
+	        int id = sc.nextInt();
+	        
+	        jogador = jogadorDAO.get(id);
+	        if (jogador != null) {
+	            jogadorEncontrado = true;
+	            System.out.println("Jogador encontrado: " + jogador);
+	            System.out.println("Deseja realmente excluir este jogador? (S/N)");
+	            String confirmacao = sc.next();
+	            if (confirmacao.equalsIgnoreCase("S")) {
+	                if (jogadorDAO.delete(id)) {
+	                    System.out.println("Jogador excluído com sucesso.");
+	                } else {
+	                    System.out.println("Falha ao excluir o jogador.");
+	                }
+	            } else {
+	                System.out.println("Operação de exclusão cancelada.");
+	            }
+	        } else {
+	            System.out.println("Jogador com ID " + id + " não encontrado. Por favor, digite outro ID.");
+	        }
+	    } while (!jogadorEncontrado);
 	}
 	
 	public static void atualizarJogador(JogadorDAO jogadorDAO, Jogador jogador, Scanner sc) throws Exception {
