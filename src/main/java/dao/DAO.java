@@ -53,10 +53,4 @@ public class DAO {
 		m.update(senha.getBytes(),0, senha.length());
 		return new BigInteger(1,m.digest()).toString(16);
 	}
-	
-	public static String toMD5Login(String login) throws Exception {
-		MessageDigest m=MessageDigest.getInstance("MD5");
-		m.update(login.getBytes(),0, login.length());
-		return new BigInteger(1,m.digest()).toString(16);
-	}
 }

@@ -16,8 +16,7 @@ public class JogadorDAO extends DAO {
 	public void finalize() {
 		close();
 	}
-	
-	
+
 	public boolean insert(Jogador jogador) {
 		boolean status = false;
 		try {  
@@ -35,13 +34,45 @@ public class JogadorDAO extends DAO {
 		return status;
 	}
 
+	public boolean update(Jogador jogador) {
+		boolean status = false;
+		try {  
+			Statement st = conexao.createStatement();
+			String sql = "UPDATE jogadores SET login = '" + jogador.getLogin() + "', senha = '"  
+					+ jogador.getSenha() + "', sexo = '" + jogador.getSexo() + "'"
+					+ " WHERE id = " + jogador.getId();
+			System.out.println(sql);
+			st.executeUpdate(sql);
+			st.close();
+			status = true;
+		} catch (SQLException u) {  
+			throw new RuntimeException(u);
+		}
+		return status;
+	}
 	
-	public Jogador get(int id) {
+	public boolean delete(int id) {
+
+		boolean status = false;
+		try {  
+			Statement st = conexao.createStatement();
+			String sql = "DELETE FROM jogadores WHERE id = " + id;
+			System.out.println(sql);
+			st.executeUpdate(sql);
+			st.close();
+			status = true;
+		} catch (SQLException u) {  
+			throw new RuntimeException(u);
+		}
+		return status;
+	}
+	
+	public Jogador getById(int id) {
 		Jogador jogador = null;
 		
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM jogadores WHERE id=" + id;
+			String sql = "SELECT * FROM jogadores WHERE id = " + id;
 			System.out.println(sql);
 			ResultSet rs = st.executeQuery(sql);	
 	        if(rs.next()){            
@@ -53,35 +84,26 @@ public class JogadorDAO extends DAO {
 		}
 		return jogador;
 	}
-	
-	
-	public List<Jogador> get() {
-		return get("");
-	}
-	
+
 	public List<Jogador> getJogadores() {
 	    return get("");
 	}
 
-	
 	public List<Jogador> getOrderById() {
 		return get("id");		
 	}
-	
 	
 	public List<Jogador> getOrderByLogin() {
 		return get("login");		
 	}
 	
-	
 	public List<Jogador> getOrderBySexo() {
 		return get("sexo");		
 	}
 	
-	
 	private List<Jogador> get(String orderBy) {	
 	
-		List<Jogador> jogadors = new ArrayList<Jogador>();
+		List<Jogador> jogadores = new ArrayList<Jogador>();
 		
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
@@ -90,15 +112,14 @@ public class JogadorDAO extends DAO {
 			ResultSet rs = st.executeQuery(sql);	           
 	        while(rs.next()) {	            	
 	        	Jogador u = new Jogador(rs.getInt("id"), rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
-	            jogadors.add(u);
+	            jogadores.add(u);
 	        }
 	        st.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		return jogadors;
+		return jogadores;
 	}
-
 
 	public List<Jogador> getSexoMasculino() {
 		List<Jogador> jogadores = new ArrayList<Jogador>();
@@ -119,39 +140,24 @@ public class JogadorDAO extends DAO {
 		return jogadores;
 	}
 	
-	
-	public boolean update(Jogador jogador) {
-		boolean status = false;
-		try {  
-			Statement st = conexao.createStatement();
-			String sql = "UPDATE jogadores SET login = '" + jogador.getLogin() + "', senha = '"  
-				       + jogador.getSenha() + "', sexo = '" + jogador.getSexo() + "'"
-					   + " WHERE id = " + jogador.getId();
+	public List<Jogador> getSexoFeminino() {
+		List<Jogador> jogadores = new ArrayList<Jogador>();
+		
+		try {
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT * FROM jogadores WHERE jogadores.sexo LIKE 'F'";
 			System.out.println(sql);
-			st.executeUpdate(sql);
-			st.close();
-			status = true;
-		} catch (SQLException u) {  
-			throw new RuntimeException(u);
+			ResultSet rs = st.executeQuery(sql);	           
+	        while(rs.next()) {	            	
+	        	Jogador u = new Jogador(rs.getInt("id"), rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
+	        	jogadores.add(u);
+	        }
+	        st.close();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		return status;
+		return jogadores;
 	}
-	
-	public boolean delete(int id) {
-		boolean status = false;
-		try {  
-			Statement st = conexao.createStatement();
-			String sql = "DELETE FROM jogadores WHERE id = " + id;
-			System.out.println(sql);
-			st.executeUpdate(sql);
-			st.close();
-			status = true;
-		} catch (SQLException u) {  
-			throw new RuntimeException(u);
-		}
-		return status;
-	}
-	
 	
 	public boolean autenticar(String login, String senha) {
 		boolean resp = false;

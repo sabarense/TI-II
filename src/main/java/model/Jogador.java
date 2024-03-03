@@ -54,6 +54,6 @@ public class Jogador {
 
 	@Override
 	public String toString() {
-		return "Jogador [id=" + id + ", login=" + login + ", senha=" + senha + ", sexo=" + sexo + "]";
+		return "Jogador [Id = " + id + ", Login = " + login + ", Senha = " + senha + ", Sexo = " + sexo + "]";
 	}	
 }
