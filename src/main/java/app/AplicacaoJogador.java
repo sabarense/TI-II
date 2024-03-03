@@ -2,8 +2,6 @@ package app;
 
 import java.util.List;
 import java.util.Scanner;
-
-import dao.DAO;
 import dao.JogadorDAO;
 import model.Jogador;
 
