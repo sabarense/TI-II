@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Agenda de contatos</title>
+<script type="text/javascript">
+
+function confirmDeleteContato(id, nome, email) {  
+    if (confirm('Confirmar a exclusão do contato [' + nome + '] (ID ' + id + ') com email ' + email + '?')) {  
+        location.href = '/contato/delete/' + id;
+    }
+}
+
+function onLoad() {
+    if(document.getElementById("msg").value !== "") {
+      alert(document.getElementById("msg").value);
+    }
+}
+</script>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white;
+}
+
+.input--main__style {
+    background-color: #00FF00;
+    font-weight: bold;
+    font-family: Arial;
+    font-size: medium;
+    border-color: transparent;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.input--button {
+    font-weight: bold;
+    font-family: Arial;
+    font-size: medium;
+    border-color: transparent;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.input--register {
+    display: inline;
+}
+
+input {
+    display: block;
+    border-radius: 7px;
+    padding: 10px;
+    border-style: solid;
+    border-color: lightgray;
+    color: black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+form p {
+    text-align: initial;
+    display: inline;
+    margin-left: 15px;
+}
+
+.p--nomargin {
+    margin-left: 0px;
+    margin-right: 10px;
+}
+</style>
+</head>
+<body onload="onLoad()">
+    <h1>Agenda de contatos</h1>
+    <input type="hidden" id="msg" name="msg" value="">
+    <UM-CONTATO>
+    <br>
+    <LISTAR-CONTATO>
+</body>
+</html>
